@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[35,)"
+loaderVersion="[34,)"
 license="MIT"
 issueTrackerURL="https://github.com/GoryMoon/InfoDataPack"
 [[mods]]
@@ -16,7 +16,7 @@ You can also add JEI information pages to items
 [[dependencies.infodatapack]]
     modId="forge"
     mandatory=true
-    versionRange="[35,)"
+    versionRange="[34,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.infodatapack]]
