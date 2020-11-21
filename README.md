@@ -6,6 +6,8 @@ A mod to add tooltip and jei information to items with a datapack
 ## Usage
 You can find examples below, the same examples are available in the `example_datapack` folder
 
+The json text can for example be generated with the help of [minecraftjson.com](https://minecraftjson.com) or [minecraft.tools](https://minecraft.tools/en/json_text.php)
+
 ### Tooltip
 ![Tooltip image](.github/images/tooltip.png)
 ```json
