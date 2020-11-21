@@ -1,0 +1,12 @@
+{
+    "items": [
+        "minecraft:diamond",
+        "minecraft:coal"
+    ],
+    "infos": [
+        "§4Only legacy coloring §aand styling §nworks for these",
+        "You can still use json text but no colors or styling will show",
+        {"translate":"item.minecraft.diamond","bold":true},
+        [{"text": "Do this to color translations "},{"text":"§3"},{"translate":"item.minecraft.coal"}]
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "items": [
+        "minecraft:diamond",
+        "minecraft:coal"
+    ],
+    "tooltips": [
+        {"text":"This ", "extra": [{"text":"is an","underlined":true},{"text":" Example ","color":"green"},{"text":"Tooltip","bold":true,"color":"green"}]},
+        ["",{"text":"This "},{"text":"is another ","italic":true,"color":"red"},{"text":"way to ","strikethrough":true},{"keybind":"key.attack"},{"text":" do it","bold":true,"underlined":true,"color":"dark_green"}],
+        {"translate":"item.minecraft.diamond","bold":true},
+        "No special style also works",
+        "§4Legacy coloring §aalso works"
+    ]
+}
