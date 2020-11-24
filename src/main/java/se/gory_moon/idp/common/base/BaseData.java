@@ -8,7 +8,7 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public abstract class BaseData {
+public  class BaseData {
     private final List<ResourceLocation> resourceLocations;
     private final List<ITextComponent> text;
 

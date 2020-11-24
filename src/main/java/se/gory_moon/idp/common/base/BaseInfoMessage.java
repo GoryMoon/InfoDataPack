@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class BaseInfoMessage<T extends BaseData> {
-    protected final List<T> dataList;
+public abstract class BaseInfoMessage {
+    protected final List<BaseData> dataList;
 
-    public BaseInfoMessage(List<T> dataList) {
+    public BaseInfoMessage(List<BaseData> dataList) {
         this.dataList = dataList;
     }
 
-    public BaseInfoMessage(PacketBuffer buffer, Function<PacketBuffer, T> createData) {
-        ImmutableList.Builder<T> builder = ImmutableList.builder();
+    public BaseInfoMessage(PacketBuffer buffer, Function<PacketBuffer, BaseData> createData) {
+        ImmutableList.Builder<BaseData> builder = ImmutableList.builder();
 
         int length = buffer.readInt();
         for (int i = 0; i < length; i++) {

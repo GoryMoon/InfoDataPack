@@ -24,15 +24,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-public abstract class BaseManager<T extends BaseData> extends JsonReloadListener {
+public abstract class BaseManager extends JsonReloadListener {
     public static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).create();
 
-    private List<T> dataList = ImmutableList.of();
+    private List<BaseData> dataList = ImmutableList.of();
     private final Object2BooleanArrayMap<UUID> dirtyMap = new Object2BooleanArrayMap<>();
-    private final BiFunction<List<ResourceLocation>, List<ITextComponent>, T> dataCreator;
+    private final BiFunction<List<ResourceLocation>, List<ITextComponent>, BaseData> dataCreator;
 
-    public BaseManager(String folder, BiFunction<List<ResourceLocation>, List<ITextComponent>, T> dataCreator) {
+    public BaseManager(String folder, BiFunction<List<ResourceLocation>, List<ITextComponent>, BaseData> dataCreator) {
         super(GSON, folder);
         this.dataCreator = dataCreator;
     }
@@ -41,7 +41,7 @@ public abstract class BaseManager<T extends BaseData> extends JsonReloadListener
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn) {
-        ImmutableList.Builder<T> builder = ImmutableList.builder();
+        ImmutableList.Builder<BaseData> builder = ImmutableList.builder();
 
         objectIn.forEach((resourceName, tooltip) -> {
             try {
@@ -98,7 +98,7 @@ public abstract class BaseManager<T extends BaseData> extends JsonReloadListener
         return dirtyMap.computeBooleanIfAbsent(id, uuid -> true);
     }
 
-    public List<T> getData() {
+    public List<BaseData> getData() {
         return dataList;
     }
 
