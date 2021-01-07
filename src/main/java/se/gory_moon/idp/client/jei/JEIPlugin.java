@@ -48,7 +48,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerAdvanced(IAdvancedRegistration registration) {
-        recipeManager = new InfoRecipeManager();
+        recipeManager = new InfoRecipeManager(registration.getJeiHelpers().getStackHelper());
         registration.addRecipeManagerPlugin(recipeManager);
     }
 
