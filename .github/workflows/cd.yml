@@ -47,7 +47,7 @@ jobs:
           name: artifacts
           path: ./libs
       - name: generate-changelog-action
-        uses: ScottBrenner/generate-changelog-action@1.0.2
+        uses: scottbrenner/generate-changelog-action@master
         id: changelog
         env:
           REPO: ${{ github.repository }}
@@ -67,7 +67,7 @@ jobs:
           prerelease: false
       - name: Upload Release Assets
         id: upload-release-assets
-        uses: alexellis/upload-assets@0.2.3
+        uses: alexellis/upload-assets@0.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
