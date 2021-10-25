@@ -30,6 +30,7 @@ public class JEIPlugin implements IModPlugin {
     private static InfoRecipeManager recipeManager;
 
     private List<IngredientInfoRecipe<ItemStack>> dummyRecipes;
+    public static List<IngredientInfoRecipe<ItemStack>> previousRecipes;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -52,6 +53,9 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerAdvanced(IAdvancedRegistration registration) {
         recipeManager = new InfoRecipeManager(registration.getJeiHelpers().getStackHelper());
+        if (previousRecipes != null) // If we have gotten the data before creating the manager use this
+            recipeManager.setRecipes(previousRecipes);
+
         registration.addRecipeManagerPlugin(recipeManager);
     }
 
@@ -61,6 +65,8 @@ public class JEIPlugin implements IModPlugin {
         infoData.forEach((key, value) -> {
             builder.addAll(IngredientInfoRecipe.create(key, VanillaTypes.ITEM, value.stream().map(TranslationTextComponent::new).toArray(ITextComponent[]::new)));
         });
-        recipeManager.setRecipes(builder.build());
+        previousRecipes = builder.build();
+        if (recipeManager != null)
+            recipeManager.setRecipes(previousRecipes);
     }
 }

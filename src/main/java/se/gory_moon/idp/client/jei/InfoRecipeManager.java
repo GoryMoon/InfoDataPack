@@ -59,7 +59,7 @@ public class InfoRecipeManager implements IRecipeManagerPlugin {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> List<T> getRecipes() {
+    public <T> List<T> getRecipes() {
         return (List<T>) recipes;
     }
 

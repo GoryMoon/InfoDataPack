@@ -20,7 +20,10 @@ public class JEIInfoMessage extends BaseInfoMessage {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> ClientJEIManager.INSTANCE.updateData(dataList));
+        //noinspection CodeBlock2Expr
+        ctx.get().enqueueWork(() -> {
+            ClientJEIManager.INSTANCE.updateData(dataList);
+        });
         ctx.get().setPacketHandled(true);
     }
 }
