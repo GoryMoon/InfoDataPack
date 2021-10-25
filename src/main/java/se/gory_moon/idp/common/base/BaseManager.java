@@ -45,20 +45,20 @@ public abstract class BaseManager extends JsonReloadListener {
 
         objectIn.forEach((resourceName, tooltip) -> {
             try {
-                JsonObject jsonobject = JSONUtils.getJsonObject(tooltip, "data");
-                JsonArray items = JSONUtils.getJsonArray(jsonobject, "items", new JsonArray());
-                JsonArray data = JSONUtils.getJsonArray(jsonobject, getDataName(), new JsonArray());
+                JsonObject jsonobject = JSONUtils.convertToJsonObject(tooltip, "data");
+                JsonArray items = JSONUtils.getAsJsonArray(jsonobject, "items", new JsonArray());
+                JsonArray data = JSONUtils.getAsJsonArray(jsonobject, getDataName(), new JsonArray());
 
                 ArrayList<ResourceLocation> resourceLocations = new ArrayList<>();
-                items.forEach(entry -> resourceLocations.add(new ResourceLocation(JSONUtils.getString(entry, "item id"))));
+                items.forEach(entry -> resourceLocations.add(new ResourceLocation(JSONUtils.convertToString(entry, "item id"))));
 
                 ArrayList<ITextComponent> textComponents = new ArrayList<>();
                 for (JsonElement entry : data) {
-                    ITextComponent itextcomponent = null;
+                    ITextComponent itextcomponent;
                     if (entry.isJsonPrimitive()) {
-                        itextcomponent = parseTextComponent(JSONUtils.getString(entry, getDataName()));
+                        itextcomponent = parseTextComponent(JSONUtils.convertToString(entry, getDataName()));
                     } else {
-                        itextcomponent = ITextComponent.Serializer.getComponentFromJson(entry);
+                        itextcomponent = ITextComponent.Serializer.fromJson(entry);
                     }
                     textComponents.add(itextcomponent);
                 }
@@ -76,12 +76,12 @@ public abstract class BaseManager extends JsonReloadListener {
         if (s.charAt(0) == '{' && s.charAt(s.length() - 1) == '}' || s.charAt(0) == '[' && s.charAt(s.length() - 1) == ']') {
             ITextComponent itextcomponent = null;
             try {
-                itextcomponent = ITextComponent.Serializer.getComponentFromJson(s);
+                itextcomponent = ITextComponent.Serializer.fromJson(s);
             } catch (JsonParseException ignored) {}
 
             if (itextcomponent == null) {
                 try {
-                    itextcomponent = ITextComponent.Serializer.getComponentFromJsonLenient(s);
+                    itextcomponent = ITextComponent.Serializer.fromJsonLenient(s);
                 } catch (JsonParseException ignored) {}
             }
 

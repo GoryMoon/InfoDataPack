@@ -36,7 +36,7 @@ public  class BaseData {
 
         length = buffer.readInt();
         text = IntStream.range(0, length)
-                .mapToObj(i -> buffer.readTextComponent())
+                .mapToObj(i -> buffer.readComponent())
                 .collect(ImmutableList.toImmutableList());
     }
 
@@ -45,7 +45,7 @@ public  class BaseData {
         resourceLocations.forEach(buffer::writeResourceLocation);
 
         buffer.writeInt(text.size());
-        text.forEach(buffer::writeTextComponent);
+        text.forEach(buffer::writeComponent);
     }
 
     public final void apply(ResourceLocation item, List<ITextComponent> toolTips) {

@@ -4,7 +4,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -72,16 +71,18 @@ public class InfoDataPack {
         checkAndSendData(event.getPlayer());
     }
 
-    private void checkAndSendData(PlayerEntity player) {
+    public static void checkAndSendData(PlayerEntity player) {
         UUID uuid = player.getGameProfile().getId();
-        String playerName = player.getDisplayName().getString();
+
         if (TOOLTIP_INSTANCE.isDirty(uuid)) {
+            String playerName = player.getDisplayName().getString();
             LOGGER.debug("Sending tooltip data to player {}", playerName);
             IDPNetwork.sendToPlayer(player, new TooltipInfoMessage(TOOLTIP_INSTANCE.getData()));
             TOOLTIP_INSTANCE.clearDirty(uuid);
         }
 
         if (JEI_INSTANCE.isDirty(uuid)) {
+            String playerName = player.getDisplayName().getString();
             LOGGER.debug("Sending jei data to player {}", playerName);
             IDPNetwork.sendToPlayer(player, new JEIInfoMessage(JEI_INSTANCE.getData()));
             JEI_INSTANCE.clearDirty(uuid);
