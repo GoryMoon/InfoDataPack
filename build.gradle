@@ -5,12 +5,14 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7.+'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
 group = 'se.gory_moon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -95,10 +97,21 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
+    // Apply Mixin AP
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+
     // compile against the JEI API but do not include it at runtime
     //compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     // at runtime, use the full JEI jar
     implementation fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+}
+
+mixin {
+    add sourceSets.main, "mixins.infodatapack.refmap.json"
+    config 'mixins.infodatapack.json'
+
+    debug.verbose = true
+    debug.export = true
 }
 
 jar {

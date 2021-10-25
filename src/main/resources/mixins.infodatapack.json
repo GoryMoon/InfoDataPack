@@ -1,0 +1,10 @@
+{
+    "required": false,
+    "package": "se.gory_moon.idp.mixins",
+    "compatibilityLevel": "JAVA_8",
+    "refmap": "mixins.infodatapack.refmap.json",
+    "mixins": [
+        "MixinPlayerList"
+    ],
+    "minVersion": "0.8"
+}

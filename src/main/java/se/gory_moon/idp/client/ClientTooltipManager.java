@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import se.gory_moon.idp.common.base.BaseData;
@@ -22,6 +23,11 @@ public class ClientTooltipManager {
 
     public void updateData(List<BaseData> data) {
         dataList = data;
+    }
+
+    @SubscribeEvent
+    public void onLeaveWorld(WorldEvent.Unload event) {
+        dataList = ImmutableList.of();
     }
 
     @SubscribeEvent
