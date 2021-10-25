@@ -12,7 +12,7 @@ import se.gory_moon.idp.InfoDataPack;
 @Mixin(PlayerList.class)
 public class MixinPlayerList {
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/network/NetworkHooks;sendMCRegistryPackets(Lnet/minecraft/network/NetworkManager;Ljava/lang/String;)V"), method = "placeNewPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/network/NetworkHooks;sendMCRegistryPackets(Lnet/minecraft/network/NetworkManager;Ljava/lang/String;)V", remap = false), method = "placeNewPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V")
     private void OnPlaceNewPlayer(NetworkManager manager, ServerPlayerEntity player, CallbackInfo ci) {
         InfoDataPack.checkAndSendData(player);
     }
