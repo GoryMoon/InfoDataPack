@@ -25,7 +25,7 @@ public class ClientJEIManager {
 
     private List<BaseData> dataList = ImmutableList.of();
     @Nullable
-    private ImmutableMap<List<ItemStack>, List<String>> itemInfoMap;
+    private ImmutableMap<List<ItemStack>, List<Component>> itemInfoMap;
 
     public static void init(FMLClientSetupEvent event) {
         INSTANCE = new ClientJEIManager();
@@ -44,9 +44,9 @@ public class ClientJEIManager {
         }
     }
 
-    public Map<List<ItemStack>, List<String>> getInfoData() {
+    public Map<List<ItemStack>, List<Component>> getInfoData() {
         if (itemInfoMap == null) {
-            ImmutableMap.Builder<List<ItemStack>, List<String>> itemInfoMapBuilder = ImmutableMap.builder();
+            ImmutableMap.Builder<List<ItemStack>, List<Component>> itemInfoMapBuilder = ImmutableMap.builder();
 
             for (BaseData data : dataList) {
                 ImmutableList.Builder<ItemStack> itemListBuilder = ImmutableList.builder();
@@ -57,8 +57,7 @@ public class ClientJEIManager {
                     }
                 }
 
-                ImmutableList<String> textList = data.getText().stream().map(Component::getString).collect(ImmutableList.toImmutableList());
-                itemInfoMapBuilder.put(itemListBuilder.build(), textList);
+                itemInfoMapBuilder.put(itemListBuilder.build(), data.getText());
             }
             itemInfoMap = itemInfoMapBuilder.build();
         }

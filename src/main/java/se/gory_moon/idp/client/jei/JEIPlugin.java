@@ -62,11 +62,11 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeManagerPlugin(recipeManager);
     }
 
-    public static void addInfoRecipes(Map<List<ItemStack>, List<String>> infoData) {
+    public static void addInfoRecipes(Map<List<ItemStack>, List<Component>> infoData) {
         LOGGER.debug("Adding ingredient info");
         ImmutableList.Builder<IngredientInfoRecipe<ItemStack>> builder = ImmutableList.builder();
         infoData.forEach((key, value) -> {
-            builder.addAll(IngredientInfoRecipe.create(key, VanillaTypes.ITEM, value.stream().map(TranslatableComponent::new).toArray(Component[]::new)));
+            builder.addAll(IngredientInfoRecipe.create(key, VanillaTypes.ITEM, value.toArray(Component[]::new)));
         });
         previousRecipes = builder.build();
         if (recipeManager != null)
