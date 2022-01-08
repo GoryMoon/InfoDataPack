@@ -135,6 +135,11 @@ mixin {
     debug.export = true
 }
 
+javadoc {
+    // Supress annoying warnings when generating JavaDoc files.
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
 jar {
     manifest {
         attributes([
