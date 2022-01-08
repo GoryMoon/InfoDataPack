@@ -40,7 +40,7 @@ public abstract class BaseManager extends SimpleJsonResourceReloadListener {
     protected abstract String getDataName();
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> elementMap, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> elementMap, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
         ImmutableList.Builder<BaseData> builder = ImmutableList.builder();
 
         elementMap.forEach((resourceName, tooltip) -> {
