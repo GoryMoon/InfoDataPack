@@ -1,6 +1,6 @@
 package se.gory_moon.idp;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
@@ -71,7 +71,7 @@ public class InfoDataPack {
         checkAndSendData(event.getPlayer());
     }
 
-    public static void checkAndSendData(PlayerEntity player) {
+    public static void checkAndSendData(Player player) {
         UUID uuid = player.getGameProfile().getId();
 
         if (TOOLTIP_INSTANCE.isDirty(uuid)) {

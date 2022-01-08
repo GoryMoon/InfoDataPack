@@ -1,7 +1,7 @@
 package se.gory_moon.idp.common.tooltip;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 import se.gory_moon.idp.client.ClientTooltipManager;
 import se.gory_moon.idp.common.base.BaseData;
 import se.gory_moon.idp.common.base.BaseInfoMessage;
@@ -15,13 +15,13 @@ public class TooltipInfoMessage extends BaseInfoMessage {
         super(tooltipDataList);
     }
 
-    public TooltipInfoMessage(PacketBuffer buffer) {
+    public TooltipInfoMessage(FriendlyByteBuf buffer) {
         super(buffer, BaseData::new);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        //noinspection CodeBlock2Expr
         ctx.get().enqueueWork(() -> {
+            //noinspection ConstantConditions
             ClientTooltipManager.INSTANCE.updateData(dataList);
         });
         ctx.get().setPacketHandled(true);

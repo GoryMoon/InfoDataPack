@@ -1,12 +1,12 @@
 package se.gory_moon.idp.common;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 import se.gory_moon.idp.InfoDataPack;
 import se.gory_moon.idp.common.jei.JEIInfoMessage;
 import se.gory_moon.idp.common.tooltip.TooltipInfoMessage;
@@ -35,8 +35,8 @@ public class IDPNetwork {
                 .add();
     }
 
-    public static <MSG> void sendToPlayer(PlayerEntity player, MSG message) {
-        IDPNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), message);
+    public static <MSG> void sendToPlayer(Player player, MSG message) {
+        IDPNetwork.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), message);
     }
 
 }

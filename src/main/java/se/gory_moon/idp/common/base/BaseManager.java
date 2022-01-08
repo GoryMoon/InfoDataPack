@@ -8,13 +8,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
-import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,15 +24,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
-public abstract class BaseManager extends JsonReloadListener {
+public abstract class BaseManager extends SimpleJsonResourceReloadListener {
     public static final Logger LOGGER = LogManager.getLogger();
     private static final Gson GSON = (new GsonBuilder()).create();
 
     private List<BaseData> dataList = ImmutableList.of();
     private final Object2BooleanArrayMap<UUID> dirtyMap = new Object2BooleanArrayMap<>();
-    private final BiFunction<List<ResourceLocation>, List<ITextComponent>, BaseData> dataCreator;
+    private final BiFunction<List<ResourceLocation>, List<Component>, BaseData> dataCreator;
 
-    public BaseManager(String folder, BiFunction<List<ResourceLocation>, List<ITextComponent>, BaseData> dataCreator) {
+    public BaseManager(String folder, BiFunction<List<ResourceLocation>, List<Component>, BaseData> dataCreator) {
         super(GSON, folder);
         this.dataCreator = dataCreator;
     }
@@ -40,27 +40,27 @@ public abstract class BaseManager extends JsonReloadListener {
     protected abstract String getDataName();
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn) {
+    protected void apply(Map<ResourceLocation, JsonElement> elementMap, ResourceManager resourceManager, ProfilerFiller profiler) {
         ImmutableList.Builder<BaseData> builder = ImmutableList.builder();
 
-        objectIn.forEach((resourceName, tooltip) -> {
+        elementMap.forEach((resourceName, tooltip) -> {
             try {
-                JsonObject jsonobject = JSONUtils.convertToJsonObject(tooltip, "data");
-                JsonArray items = JSONUtils.getAsJsonArray(jsonobject, "items", new JsonArray());
-                JsonArray data = JSONUtils.getAsJsonArray(jsonobject, getDataName(), new JsonArray());
+                JsonObject jsonobject = GsonHelper.convertToJsonObject(tooltip, "data");
+                JsonArray items = GsonHelper.getAsJsonArray(jsonobject, "items", new JsonArray());
+                JsonArray data = GsonHelper.getAsJsonArray(jsonobject, getDataName(), new JsonArray());
 
                 ArrayList<ResourceLocation> resourceLocations = new ArrayList<>();
-                items.forEach(entry -> resourceLocations.add(new ResourceLocation(JSONUtils.convertToString(entry, "item id"))));
+                items.forEach(entry -> resourceLocations.add(new ResourceLocation(GsonHelper.convertToString(entry, "item id"))));
 
-                ArrayList<ITextComponent> textComponents = new ArrayList<>();
+                ArrayList<Component> textComponents = new ArrayList<>();
                 for (JsonElement entry : data) {
-                    ITextComponent itextcomponent;
+                    Component component;
                     if (entry.isJsonPrimitive()) {
-                        itextcomponent = parseTextComponent(JSONUtils.convertToString(entry, getDataName()));
+                        component = parseTextComponent(GsonHelper.convertToString(entry, getDataName()));
                     } else {
-                        itextcomponent = ITextComponent.Serializer.fromJson(entry);
+                        component = Component.Serializer.fromJson(entry);
                     }
-                    textComponents.add(itextcomponent);
+                    textComponents.add(component);
                 }
 
                 builder.add(dataCreator.apply(resourceLocations, textComponents));
@@ -72,30 +72,30 @@ public abstract class BaseManager extends JsonReloadListener {
         dataList = builder.build();
     }
 
-    private ITextComponent parseTextComponent(String s) {
+    private Component parseTextComponent(String s) {
         if (s.charAt(0) == '{' && s.charAt(s.length() - 1) == '}' || s.charAt(0) == '[' && s.charAt(s.length() - 1) == ']') {
-            ITextComponent itextcomponent = null;
+            Component component = null;
             try {
-                itextcomponent = ITextComponent.Serializer.fromJson(s);
+                component = Component.Serializer.fromJson(s);
             } catch (JsonParseException ignored) {}
 
-            if (itextcomponent == null) {
+            if (component == null) {
                 try {
-                    itextcomponent = ITextComponent.Serializer.fromJsonLenient(s);
+                    component = Component.Serializer.fromJsonLenient(s);
                 } catch (JsonParseException ignored) {}
             }
 
-            if (itextcomponent == null) {
-                itextcomponent = new StringTextComponent(s);
+            if (component == null) {
+                component = new TextComponent(s);
             }
-            return itextcomponent;
+            return component;
         } else {
-            return new StringTextComponent(s);
+            return new TextComponent(s);
         }
     }
 
     public boolean isDirty(UUID id) {
-        return dirtyMap.computeBooleanIfAbsent(id, uuid -> true);
+        return dirtyMap.computeIfAbsent(id, uuid -> true);
     }
 
     public List<BaseData> getData() {

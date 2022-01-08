@@ -1,8 +1,8 @@
 package se.gory_moon.idp.common.base;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.List;
 import java.util.function.Function;
@@ -15,7 +15,7 @@ public abstract class BaseInfoMessage {
         this.dataList = dataList;
     }
 
-    public BaseInfoMessage(PacketBuffer buffer, Function<PacketBuffer, BaseData> createData) {
+    public BaseInfoMessage(FriendlyByteBuf buffer, Function<FriendlyByteBuf, BaseData> createData) {
         ImmutableList.Builder<BaseData> builder = ImmutableList.builder();
 
         int length = buffer.readInt();
@@ -25,7 +25,7 @@ public abstract class BaseInfoMessage {
         dataList = builder.build();
     }
 
-    public void encode(PacketBuffer buffer) {
+    public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(dataList.size());
         dataList.forEach(data -> data.write(buffer));
     }

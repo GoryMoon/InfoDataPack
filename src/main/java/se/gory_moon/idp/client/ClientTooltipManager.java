@@ -1,7 +1,7 @@
 package se.gory_moon.idp.client;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -9,10 +9,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import se.gory_moon.idp.common.base.BaseData;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ClientTooltipManager {
 
+    @Nullable
     public static ClientTooltipManager INSTANCE;
     protected List<BaseData> dataList = ImmutableList.of();
 
