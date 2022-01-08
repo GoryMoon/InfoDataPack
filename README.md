@@ -38,10 +38,11 @@ The json text can for example be generated with the help of [minecraftjson.com](
         "minecraft:coal"
     ],
     "infos": [
-        "§4Only legacy coloring §aand styling §nworks for these",
-        "You can still use json text but no colors or styling will show",
+        {"text":"This ", "extra": [{"text":"is an","underlined":true},{"text":" Example ","color":"green"},{"text":"Tooltip","bold":true,"color":"green"}]},
+        ["",{"text":"This "},{"text":"is another ","italic":true,"color":"red"},{"text":"way to ","strikethrough":true},{"keybind":"key.attack"},{"text":" do it","bold":true,"underlined":true,"color":"dark_green"}],
         {"translate":"item.minecraft.diamond","bold":true},
-        [{"text": "Do this to color translations "},{"text":"§3"},{"translate":"item.minecraft.coal"}]
+        "No special style also works",
+        "§4Legacy coloring §aalso works"
     ]
 }
 ```

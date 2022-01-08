@@ -1,16 +1,16 @@
 package se.gory_moon.idp.common.base;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 public  class BaseData {
     private final List<ResourceLocation> resourceLocations;
-    private final List<ITextComponent> text;
+    private final List<Component> text;
 
     /**
      * Constructs a DataObject.
@@ -18,7 +18,7 @@ public  class BaseData {
      * @param resourceLocations The ResourceLocations to match against
      * @param text              The string to add the item matching the condition
      */
-    public BaseData(List<ResourceLocation> resourceLocations, List<ITextComponent> text) {
+    public BaseData(List<ResourceLocation> resourceLocations, List<Component> text) {
         this.resourceLocations = resourceLocations;
         this.text = text;
     }
@@ -28,7 +28,7 @@ public  class BaseData {
      *
      * @param buffer A buffer with the packet data
      */
-    public BaseData(PacketBuffer buffer) {
+    public BaseData(FriendlyByteBuf buffer) {
         int length = buffer.readInt();
         resourceLocations = IntStream.range(0, length)
                 .mapToObj(i -> buffer.readResourceLocation())
@@ -40,7 +40,7 @@ public  class BaseData {
                 .collect(ImmutableList.toImmutableList());
     }
 
-    public void write(PacketBuffer buffer) {
+    public void write(FriendlyByteBuf buffer) {
         buffer.writeInt(resourceLocations.size());
         resourceLocations.forEach(buffer::writeResourceLocation);
 
@@ -48,7 +48,7 @@ public  class BaseData {
         text.forEach(buffer::writeComponent);
     }
 
-    public final void apply(ResourceLocation item, List<ITextComponent> toolTips) {
+    public final void apply(ResourceLocation item, List<Component> toolTips) {
         if (this.resourceLocations.stream().anyMatch(item::equals))
             toolTips.addAll(this.text);
     }
@@ -57,7 +57,7 @@ public  class BaseData {
         return resourceLocations;
     }
 
-    public List<ITextComponent> getText() {
+    public List<Component> getText() {
         return text;
     }
 }

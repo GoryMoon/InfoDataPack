@@ -9,8 +9,8 @@ import mezz.jei.api.recipe.advanced.IRecipeManagerPlugin;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.gui.Focus;
 import mezz.jei.plugins.jei.info.IngredientInfoRecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,14 +31,13 @@ public class InfoRecipeManager implements IRecipeManagerPlugin {
         return uuids;
     }
 
-    @SuppressWarnings({ "unchecked", "NullableProblems" })
+    @SuppressWarnings({ "unchecked" })
     @Override
     public <T, V> List<T> getRecipes(IRecipeCategory<T> iRecipeCategory, IFocus<V> iFocus) {
         if (iRecipeCategory.getUid() != VanillaRecipeCategoryUid.INFORMATION) return Collections.emptyList();
         IFocus<V> focus = Focus.check(iFocus);
-        if (!(focus.getValue() instanceof ItemStack)) return Collections.emptyList();
+        if (!(focus.getValue() instanceof ItemStack ingredient)) return Collections.emptyList();
 
-        ItemStack ingredient = (ItemStack) focus.getValue();
         List<IngredientInfoRecipe<ItemStack>> allRecipes = new ArrayList<>();
         for (IngredientInfoRecipe<ItemStack> recipe : recipes) {
             for (ItemStack stack : recipe.getIngredients()) {
