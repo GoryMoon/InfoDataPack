@@ -8,14 +8,14 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
 import mezz.jei.plugins.jei.info.IngredientInfoRecipe;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import se.gory_moon.idp.InfoDataPack;
@@ -32,9 +32,13 @@ public class JEIPlugin implements IModPlugin {
     @Nullable
     private static InfoRecipeManager recipeManager;
     @Nullable
-    private List<IngredientInfoRecipe<ItemStack>> dummyRecipes;
+    private List<IngredientInfoRecipe> dummyRecipes;
     @Nullable
-    public static List<IngredientInfoRecipe<ItemStack>> previousRecipes;
+    public static List<IngredientInfoRecipe> previousRecipes;
+    @Nullable
+    public static Map<List<ItemStack>, List<Component>> preInfoData;
+    @Nullable
+    private static IIngredientManager ingredientManager;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -43,7 +47,9 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        dummyRecipes = IngredientInfoRecipe.create(Collections.singletonList(new ItemStack(Items.BARRIER)), VanillaTypes.ITEM, new TextComponent("Dummy text, plz ignore ;)"));
+        ingredientManager = registration.getIngredientManager();
+        tryToSetData();
+        dummyRecipes = IngredientInfoRecipe.create(ingredientManager, Collections.singletonList(new ItemStack(Items.BARRIER)), VanillaTypes.ITEM, new TextComponent("Dummy text, plz ignore ;)"));
     }
 
     @Override
@@ -56,17 +62,38 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerAdvanced(IAdvancedRegistration registration) {
         recipeManager = new InfoRecipeManager(registration.getJeiHelpers().getStackHelper());
-        if (previousRecipes != null) // If we have gotten the data before creating the manager use this
-            recipeManager.setRecipes(previousRecipes);
-
+        tryToSetData();
         registration.addRecipeManagerPlugin(recipeManager);
     }
 
+    private void tryToSetData() {
+        if (recipeManager != null && ingredientManager != null)
+            recipeManager.setIngredientManager(ingredientManager);
+
+        // If we have gotten the data before creating the manager use this
+        if (previousRecipes != null && recipeManager != null)
+            recipeManager.setRecipes(previousRecipes);
+
+        if (preInfoData != null && ingredientManager != null) {
+            addRecipes(preInfoData);
+            preInfoData = null;
+        }
+    }
+
     public static void addInfoRecipes(Map<List<ItemStack>, List<Component>> infoData) {
+        if (ingredientManager == null) {
+            preInfoData = infoData;
+            return;
+        }
+        addRecipes(infoData);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static void addRecipes(Map<List<ItemStack>, List<Component>> infoData) {
         LOGGER.debug("Adding ingredient info");
-        ImmutableList.Builder<IngredientInfoRecipe<ItemStack>> builder = ImmutableList.builder();
+        ImmutableList.Builder<IngredientInfoRecipe> builder = ImmutableList.builder();
         infoData.forEach((key, value) -> {
-            builder.addAll(IngredientInfoRecipe.create(key, VanillaTypes.ITEM, value.toArray(Component[]::new)));
+            builder.addAll(IngredientInfoRecipe.create(ingredientManager, key, VanillaTypes.ITEM, value.toArray(Component[]::new)));
         });
         previousRecipes = builder.build();
         if (recipeManager != null)
