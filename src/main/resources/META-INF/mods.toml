@@ -6,6 +6,7 @@ issueTrackerURL="https://github.com/GoryMoon/InfoDataPack"
     modId="infodatapack"
     version="${file.jarVersion}"
     displayName="Info DataPack"
+    itemIcon="minecraft:paper"
     credits="Thanks to Darkosto for the idea"
     authors="GoryMoon"
     description='''
@@ -28,6 +29,6 @@ You can also add JEI information pages to items
 [[dependencies.infodatapack]]
     modId="jei"
     mandatory=false
-    versionRange="[9.1.2.50,)"
+    versionRange="[9.3.0.86,)"
     ordering="BEFORE"
     side="CLIENT"
