@@ -29,6 +29,6 @@ You can also add JEI information pages to items
 [[dependencies.infodatapack]]
     modId="jei"
     mandatory=false
-    versionRange="[9.3.0.86,)"
+    versionRange="[9.4.1.97,)"
     ordering="BEFORE"
     side="CLIENT"
