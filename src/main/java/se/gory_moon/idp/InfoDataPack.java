@@ -22,6 +22,7 @@ import se.gory_moon.idp.common.jei.JEIManager;
 import se.gory_moon.idp.common.tooltip.TooltipInfoMessage;
 import se.gory_moon.idp.common.tooltip.TooltipManager;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @Mod(InfoDataPack.MODID)
@@ -31,7 +32,9 @@ public class InfoDataPack {
 
     private static final Logger LOGGER = LogManager.getLogger(InfoDataPack.class);
 
+    @Nullable
     private static TooltipManager TOOLTIP_INSTANCE;
+    @Nullable
     private static JEIManager JEI_INSTANCE;
 
     public InfoDataPack() {
@@ -63,25 +66,25 @@ public class InfoDataPack {
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        checkAndSendData(event.getPlayer());
+        checkAndSendData(event.getEntity());
     }
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        checkAndSendData(event.getPlayer());
+        checkAndSendData(event.getEntity());
     }
 
     public static void checkAndSendData(Player player) {
         UUID uuid = player.getGameProfile().getId();
 
-        if (TOOLTIP_INSTANCE.isDirty(uuid)) {
+        if (TOOLTIP_INSTANCE != null && TOOLTIP_INSTANCE.isDirty(uuid)) {
             String playerName = player.getDisplayName().getString();
             LOGGER.debug("Sending tooltip data to player {}", playerName);
             IDPNetwork.sendToPlayer(player, new TooltipInfoMessage(TOOLTIP_INSTANCE.getData()));
             TOOLTIP_INSTANCE.clearDirty(uuid);
         }
 
-        if (JEI_INSTANCE.isDirty(uuid)) {
+        if (JEI_INSTANCE != null && JEI_INSTANCE.isDirty(uuid)) {
             String playerName = player.getDisplayName().getString();
             LOGGER.debug("Sending jei data to player {}", playerName);
             IDPNetwork.sendToPlayer(player, new JEIInfoMessage(JEI_INSTANCE.getData()));

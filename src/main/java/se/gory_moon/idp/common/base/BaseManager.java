@@ -14,7 +14,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,11 +85,11 @@ public abstract class BaseManager extends SimpleJsonResourceReloadListener {
             }
 
             if (component == null) {
-                component = new TextComponent(s);
+                component = Component.literal(s);
             }
             return component;
         } else {
-            return new TextComponent(s);
+            return Component.literal(s);
         }
     }
 

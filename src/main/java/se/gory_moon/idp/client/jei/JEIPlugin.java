@@ -51,7 +51,7 @@ public class JEIPlugin implements IModPlugin {
 
         infoData.forEach((key, value) -> {
             if (recipeRegistration != null)
-                recipeRegistration.addIngredientInfo(key, VanillaTypes.ITEM, value.toArray(Component[]::new));
+                recipeRegistration.addIngredientInfo(key, VanillaTypes.ITEM_STACK, value.toArray(Component[]::new));
         });
     }
 }

@@ -20,10 +20,7 @@ public class TooltipInfoMessage extends BaseInfoMessage {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            //noinspection ConstantConditions
-            ClientTooltipManager.INSTANCE.updateData(dataList);
-        });
-        ctx.get().setPacketHandled(true);
+        //noinspection ConstantConditions
+        ClientTooltipManager.INSTANCE.updateData(dataList);
     }
 }
