@@ -25,13 +25,13 @@ public class IDPNetwork {
         CHANNEL.messageBuilder(TooltipInfoMessage.class, 0, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(TooltipInfoMessage::encode)
                 .decoder(TooltipInfoMessage::new)
-                .consumer(TooltipInfoMessage::handle)
+                .consumerMainThread(TooltipInfoMessage::handle)
                 .add();
 
         CHANNEL.messageBuilder(JEIInfoMessage.class, 1, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(JEIInfoMessage::encode)
                 .decoder(JEIInfoMessage::new)
-                .consumer(JEIInfoMessage::handle)
+                .consumerMainThread(JEIInfoMessage::handle)
                 .add();
     }
 
