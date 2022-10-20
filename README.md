@@ -1,8 +1,8 @@
 # InfoDataPack
 <a href="https://github.com/GoryMoon/InfoDataPack/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/GoryMoon/InfoDataPack/Java%20CI" /></a>
 
-<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/full_infodatapack_downloads.svg" /></a>
-<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/versions/infodatapack_all.svg" /></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/full_582464_downloads.svg" /></a>
+<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/versions/582464_all.svg" /></a>
 
 A mod to add tooltip and jei information to items with a datapack
 
