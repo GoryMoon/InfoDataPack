@@ -1,8 +1,11 @@
 # InfoDataPack
-<a href="https://github.com/GoryMoon/InfoDataPack/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/GoryMoon/InfoDataPack/Java%20CI" /></a>
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/GoryMoon/InfoDataPack/ci.yml)](https://github.com/GoryMoon/InfoDataPack/actions/workflows/ci.yml)
 
-<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/full_582464_downloads.svg" /></a>
-<a href="https://www.curseforge.com/minecraft/mc-mods/infodatapack"><img src="http://cf.way2muchnoise.eu/versions/582464_all.svg" /></a>
+[![CurseForge Downloads](https://cf.way2muchnoise.eu/full_422087_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/infodatapack)
+[![CurseForge Versions](https://cf.way2muchnoise.eu/versions/422087_all.svg)](https://www.curseforge.com/minecraft/mc-mods/infodatapack)
+
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/infodatapack?color=1bd96a&label=Downlods&logo=Modrinth)](https://modrinth.com/mod/infodatapack)
+[![Modrinth Versions](https://img.shields.io/modrinth/game-versions/infodatapack?color=1bd96a&label=Available%20for&logo=Modrinth)](https://modrinth.com/mod/infodatapack)
 
 A mod to add tooltip and jei information to items with a datapack
 
