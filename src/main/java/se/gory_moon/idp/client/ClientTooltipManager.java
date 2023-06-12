@@ -1,13 +1,11 @@
 package se.gory_moon.idp.client;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.idp.common.base.BaseData;
 
 import javax.annotation.Nullable;
@@ -35,11 +33,6 @@ public class ClientTooltipManager {
 
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
-        for (BaseData data : dataList) {
-            ResourceLocation registryName = ForgeRegistries.ITEMS.getKey(event.getItemStack().getItem());
-            if (registryName != null) {
-                data.apply(registryName, event.getToolTip());
-            }
-        }
+        dataList.forEach(data -> data.apply(event.getItemStack(), event.getToolTip()));
     }
 }
