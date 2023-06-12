@@ -7,7 +7,8 @@
 A mod to add tooltip and jei information to items with a datapack
 
 ## Usage
-You can find examples below, the same examples are available in the `example_datapack` folder
+You can find examples below, the same examples are available in the `example_datapack` folder.
+NBT filtering only works for tooltips, in JEI the item only uses that data to show. 
 
 The json text can for example be generated with the help of [minecraftjson.com](https://minecraftjson.com) or [minecraft.tools](https://minecraft.tools/en/json_text.php)
 
@@ -17,7 +18,14 @@ The json text can for example be generated with the help of [minecraftjson.com](
 {
     "items": [
         "minecraft:diamond",
-        "minecraft:coal"
+        {
+            "item": "minecraft:coal",
+            "nbt": {
+                "display": {
+                    "Name": "{\"text\":\"Compact Coal\"}"
+                }
+            }
+        }
     ],
     "tooltips": [
         {"text":"This ", "extra": [{"text":"is an","underlined":true},{"text":" Example ","color":"green"},{"text":"Tooltip","bold":true,"color":"green"}]},
@@ -35,7 +43,14 @@ The json text can for example be generated with the help of [minecraftjson.com](
 {
     "items": [
         "minecraft:diamond",
-        "minecraft:coal"
+        {
+            "item": "minecraft:coal",
+            "nbt": {
+                "display": {
+                    "Name": "{\"text\":\"Compact Coal\"}"
+                }
+            }
+        }
     ],
     "infos": [
         {"text":"This ", "extra": [{"text":"is an","underlined":true},{"text":" Example ","color":"green"},{"text":"Tooltip","bold":true,"color":"green"}]},

@@ -2,15 +2,13 @@ package se.gory_moon.idp.client;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import se.gory_moon.idp.client.jei.JEIPlugin;
+import se.gory_moon.idp.common.ItemPredicate;
 import se.gory_moon.idp.common.base.BaseData;
 
 import javax.annotation.Nullable;
@@ -50,10 +48,10 @@ public class ClientJEIManager {
 
             for (BaseData data : dataList) {
                 ImmutableList.Builder<ItemStack> itemListBuilder = ImmutableList.builder();
-                for (ResourceLocation resourceLocation : data.getResourceLocations()) {
-                    Item value = ForgeRegistries.ITEMS.getValue(resourceLocation);
-                    if (value != null) {
-                        itemListBuilder.add(new ItemStack(value));
+                for (ItemPredicate itemPredicate : data.getItemPredicates()) {
+                    ItemStack value = itemPredicate.getItemStack();
+                    if (value != ItemStack.EMPTY) {
+                        itemListBuilder.add(value);
                     }
                 }
 

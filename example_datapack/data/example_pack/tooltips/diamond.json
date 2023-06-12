@@ -1,7 +1,14 @@
 {
     "items": [
         "minecraft:diamond",
-        "minecraft:coal"
+        {
+            "item": "minecraft:coal",
+            "nbt": {
+                "display": {
+                    "Name": "{\"text\":\"Compact Coal\"}"
+                }
+            }
+        }
     ],
     "tooltips": [
         {"text":"This ", "extra": [{"text":"is an","underlined":true},{"text":" Example ","color":"green"},{"text":"Tooltip","bold":true,"color":"green"}]},
