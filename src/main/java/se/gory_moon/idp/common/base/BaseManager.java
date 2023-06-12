@@ -8,14 +8,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import se.gory_moon.idp.common.ItemPredicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +32,9 @@ public abstract class BaseManager extends SimpleJsonResourceReloadListener {
 
     private List<BaseData> dataList = ImmutableList.of();
     private final Object2BooleanArrayMap<UUID> dirtyMap = new Object2BooleanArrayMap<>();
-    private final BiFunction<List<ResourceLocation>, List<Component>, BaseData> dataCreator;
+    private final BiFunction<List<ItemPredicate>, List<Component>, BaseData> dataCreator;
 
-    public BaseManager(String folder, BiFunction<List<ResourceLocation>, List<Component>, BaseData> dataCreator) {
+    public BaseManager(String folder, BiFunction<List<ItemPredicate>, List<Component>, BaseData> dataCreator) {
         super(GSON, folder);
         this.dataCreator = dataCreator;
     }
@@ -48,8 +51,21 @@ public abstract class BaseManager extends SimpleJsonResourceReloadListener {
                 JsonArray items = GsonHelper.getAsJsonArray(jsonobject, "items", new JsonArray());
                 JsonArray data = GsonHelper.getAsJsonArray(jsonobject, getDataName(), new JsonArray());
 
-                ArrayList<ResourceLocation> resourceLocations = new ArrayList<>();
-                items.forEach(entry -> resourceLocations.add(new ResourceLocation(GsonHelper.convertToString(entry, "item id"))));
+                ArrayList<ItemPredicate> resourceLocations = new ArrayList<>();
+                items.forEach(entry -> {
+                    if (entry.isJsonObject()) {
+                        JsonObject item = GsonHelper.convertToJsonObject(entry, "item");
+                        ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(item, "item"));
+                        CompoundTag nbt = null;
+                        if (item.has("nbt")) {
+                            nbt = CraftingHelper.getNBT(item.get("nbt"));
+                        }
+                        resourceLocations.add(new ItemPredicate(id, nbt));
+                    } else {
+                        ResourceLocation id = new ResourceLocation(GsonHelper.convertToString(entry, "item id"));
+                        resourceLocations.add(new ItemPredicate(id, null));
+                    }
+                });
 
                 ArrayList<Component> textComponents = new ArrayList<>();
                 for (JsonElement entry : data) {
