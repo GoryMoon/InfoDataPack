@@ -149,9 +149,10 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // compile against the JEI API but do not include it at runtime
-    //compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-    // at runtime, use the full JEI jar
-    implementation fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 }
 
 mixin {
@@ -189,7 +190,8 @@ tasks.withType(JavaCompile).configureEach {
 
 // Jar Signing
 import net.minecraftforge.gradle.common.tasks.SignJar
-task signJar(type: SignJar, dependsOn: jar) {
+
+tasks.register('signJar', SignJar) {
     dependsOn 'reobfJar'
     onlyIf {
         project.hasProperty('keyStore')
@@ -204,9 +206,7 @@ task signJar(type: SignJar, dependsOn: jar) {
         keyPass = project.findProperty('keyStorePass')
         inputFile = jar.archiveFile.get()
         outputFile = jar.archiveFile.get()
-    }
-
-    else {
+    } else {
         project.logger.log(LogLevel.WARN, "Could not sign ${jar.archiveFileName.get()}. No keyStore property could be found")
     }
 }
