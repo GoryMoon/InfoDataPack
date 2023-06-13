@@ -8,13 +8,11 @@ buildscript {
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 apply plugin: 'org.spongepowered.mixin'
-
-apply from: "https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/minecraft/artifacts.gradle"
 
 version = mod_version
 group = 'se.gory_moon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -131,14 +129,19 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
         url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
     }
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
+        url = "https://modmaven.dev"
     }
 }
 
@@ -163,9 +166,30 @@ mixin {
     debug.export = true
 }
 
-javadoc {
-    // Supress annoying warnings when generating JavaDoc files.
-    options.addStringOption('Xdoclint:none', '-quiet')
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
+    description = 'Creates a JAR containing the source code.'
+    from sourceSets.main.allSource
+    archiveClassifier.set('sources')
+}
+
+tasks.register('deobfJar', Jar) {
+    description = 'Creates a JAR containing the non-obfuscated compiled code.'
+    from sourceSets.main.output
+    archiveClassifier.set('deobf')
+}
+
+tasks.register('forgelibJar', Jar) {
+    description = 'Creates a compiled JAR which also contains raw sources.'
+    from sourceSets.main.output
+    from sourceSets.main.allJava
+    archiveClassifier.set('forgelib')
+}
+
+artifacts {
+    archives sourcesJar
+    archives deobfJar
+    archives forgelibJar
 }
 
 jar {
