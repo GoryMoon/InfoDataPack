@@ -1,33 +1,31 @@
 modLoader="javafml"
-loaderVersion="[46,)"
-license="MIT"
-issueTrackerURL="https://github.com/GoryMoon/InfoDataPack"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="${mod_issue_url}"
 [[mods]]
-    modId="infodatapack"
-    version="${file.jarVersion}"
-    displayName="Info DataPack"
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
     itemIcon="minecraft:paper"
-    credits="Thanks to Darkosto for the idea"
-    authors="GoryMoon"
-    description='''
-A mod that allows you add custom tooltips to items through datapacks.
-You can also add JEI information pages to items'''
+    credits="${mod_credits}"
+    authors="${mod_authors}"
+    description='''${mod_description}'''
 
-[[dependencies.infodatapack]]
+[[dependencies.${mod_id}]]
     modId="forge"
     mandatory=true
-    versionRange="[46,)"
+    versionRange="${neo_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.infodatapack]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20,1.21)"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.infodatapack]]
+[[dependencies.${mod_id}]]
     modId="jei"
     mandatory=false
-    versionRange="[13.1.0,)"
+    versionRange="${jei_version_range}"
     ordering="BEFORE"
     side="CLIENT"
