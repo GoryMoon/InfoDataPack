@@ -20,7 +20,7 @@ public class JEIPlugin implements IModPlugin {
     private static final Logger LOGGER = LogManager.getLogger(JEIPlugin.class);
 
     @Nullable
-    public static Map<List<ItemStack>, List<Component>> preInfoData;
+    public static Map<List<ItemStack>, List<Component>> infoData;
     @Nullable
     private static IRecipeRegistration recipeRegistration;
 
@@ -32,21 +32,18 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         recipeRegistration = registration;
-        tryToSetData();
-    }
 
-    private void tryToSetData() {
-        if (preInfoData != null) {
-            addRecipes(preInfoData);
-            preInfoData = null;
+        // Add data if available
+        if (infoData != null) {
+            addRecipes(infoData);
         }
     }
 
     public static void addInfoRecipes(Map<List<ItemStack>, List<Component>> infoData) {
-        preInfoData = infoData;
+        JEIPlugin.infoData = infoData;
     }
 
-    private static void addRecipes(Map<List<ItemStack>, List<Component>> infoData) {
+    private void addRecipes(Map<List<ItemStack>, List<Component>> infoData) {
         LOGGER.debug("Adding ingredient info");
 
         infoData.forEach((key, value) -> {
