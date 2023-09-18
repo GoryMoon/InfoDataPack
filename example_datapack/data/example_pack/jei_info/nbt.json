@@ -1,0 +1,19 @@
+{
+    "items": [
+        {
+            "item": "minecraft:potion",
+            "nbt": {
+                "Potion": "minecraft:strong_regeneration"
+            }
+        },
+        {
+            "item": "minecraft:enchanted_book",
+            "nbt": "{\"StoredEnchantments\":[{\"lvl\":3s,\"id\":\"minecraft:respiration\"}]}"
+        }
+    ],
+    "infos": [
+        "Example usage with nbt",
+        "For the book the nbt needs to be a string as the",
+        "level is a 'short', aka 3s and that isn't valid json"
+    ]
+}
