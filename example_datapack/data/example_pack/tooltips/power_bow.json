@@ -1,0 +1,17 @@
+{
+    "items": [
+        {
+            "item": "minecraft:bow",
+            "nbt": {
+                "Enchantments": [
+                    {
+                        "id": "minecraft:power"
+                    }
+                ]
+            }
+        }
+    ],
+    "tooltips": [
+        "Power bow"
+    ]
+}

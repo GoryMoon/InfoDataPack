@@ -56,14 +56,19 @@ public abstract class BaseManager extends SimpleJsonResourceReloadListener {
                     if (entry.isJsonObject()) {
                         JsonObject item = GsonHelper.convertToJsonObject(entry, "item");
                         ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(item, "item"));
-                        CompoundTag nbt = null;
+                        CompoundTag tag = null;
                         if (item.has("nbt")) {
-                            nbt = CraftingHelper.getNBT(item.get("nbt"));
+                            tag = CraftingHelper.getNBT(item.get("nbt"));
                         }
-                        resourceLocations.add(new ItemPredicate(id, nbt));
+                        CompoundTag excludeTag = null;
+                        if (item.has("exclude_nbt")) {
+                            excludeTag = CraftingHelper.getNBT(item.get("exclude_nbt"));
+                        }
+
+                        resourceLocations.add(new ItemPredicate(id, tag, excludeTag));
                     } else {
                         ResourceLocation id = new ResourceLocation(GsonHelper.convertToString(entry, "item id"));
-                        resourceLocations.add(new ItemPredicate(id, null));
+                        resourceLocations.add(new ItemPredicate(id, null, null));
                     }
                 });
 

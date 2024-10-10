@@ -1,0 +1,11 @@
+{
+    "items": [
+        {
+            "item": "minecraft:bow",
+            "exclude_nbt": "{Enchantments:[{id:\"minecraft:power\"}]}"
+        }
+    ],
+    "tooltips": [
+        "Not power bow"
+    ]
+}
