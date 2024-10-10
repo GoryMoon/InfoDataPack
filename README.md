@@ -15,7 +15,11 @@ NBT filtering only works for tooltips, in JEI the item only uses that data to sh
 
 The json text can for example be generated with the help of [minecraftjson.com](https://minecraftjson.com) or [minecraft.tools](https://minecraft.tools/en/json_text.php)
 
+The SNBT part of the item can be written/edited with [SNBT Editor](https://gorymoon.github.io/snbt-editor/)
+
 ### Tooltip
+
+For tooltips you can add a `exclude_nbt`, it will exclude any item matching that nbt. It can be combined with the normal `nbt`.
 ![Tooltip image](.github/images/tooltip.png)
 ```json
 {
@@ -26,6 +30,11 @@ The json text can for example be generated with the help of [minecraftjson.com](
             "nbt": {
                 "display": {
                     "Name": "{\"text\":\"Compact Coal\"}"
+                }
+            },
+            "exclude_nbt": {
+                "display": {
+                    "Name": "{text:\"Infinity Diamond\"}"
                 }
             }
         }
@@ -41,7 +50,7 @@ The json text can for example be generated with the help of [minecraftjson.com](
 ```
 
 ### JEI
-![Tooltip image](.github/images/jei_info.png)
+![JEI image](.github/images/jei_info.png)
 ```json
 {
     "items": [
